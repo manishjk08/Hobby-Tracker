@@ -6,7 +6,7 @@ import './config/db.js'
 import { errorHandler,notFound } from './middleware/errorHandler.js'
 import authRoutes from './routes/authRoutes.js'
 import habitRoutes from './routes/habitRoutes.js'
-
+import logRoutes from './routes/logRoutes.js'
 
 const app=express()
 const PORT=process.env.PORT||5000
@@ -20,6 +20,7 @@ app.use(morgan("dev"))
 //routes
 app.use('/api/auth',authRoutes)
 app.use('/api/habit',habitRoutes)
+app.use('/api/log',logRoutes)
 
 
 
