@@ -10,11 +10,11 @@ export const habitModel={
         )
         return result.rows
     },
-    createHabit:async(user_id,title,description,category,icon,color,frequency,targetDaysPerWeek)=>{
+    createHabit:async(user_id,title,description,category,icon,color,frequency,targetdaysperweek)=>{
         const result=await pool.query(
-            `Insert into habits (user_id,title,description,category,icon,color,frequency,targetDaysPerWeek) Values
+            `Insert into habits (user_id,title,description,category,icon,color,frequency,targetdaysperweek) Values
             ($1,$2,$3,$4,$5,$6,$7,$8) Returning *`,
-            [user_id,title,description,category,icon,color,frequency,targetDaysPerWeek]
+            [user_id,title,description,category,icon,color,frequency,targetdaysperweek]
         )
         return result.rows[0]
     },
@@ -25,7 +25,7 @@ export const habitModel={
     description,
     category,
     frequency,
-    targetDaysPerWeek,
+    targetdaysperweek,
     icon,
     color,
     
@@ -37,12 +37,12 @@ export const habitModel={
              description = $2,
              category = $3,
              frequency = $4,
-             targetDaysPerWeek = $5,
+             targetdaysperweek = $5,
              icon = $6,
              color = $7
          WHERE id = $8 AND user_id = $9
          RETURNING *`,
-        [title, description, category, frequency, targetDaysPerWeek, 
+        [title, description, category, frequency, targetdaysperweek, 
          icon, color, id, user_id]
     );
     return result.rows[0];

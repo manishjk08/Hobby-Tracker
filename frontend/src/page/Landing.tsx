@@ -1,160 +1,361 @@
-
+import { useNavigate } from "react-router-dom";
 
 const Landing = () => {
+  const navigate = useNavigate();
+
+  const handleSignUp = () => {
+    navigate("/register");
+  };
+
+  const handleLogin = () => {
+    navigate("/login");
+  };
+
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-[#fafafa] text-black">
 
       
-      <nav className="flex justify-between items-center px-8 py-5 ">
-        <h1 className="text-xl font-bold tracking-tight">
-          HobbyAI
-        </h1>
-        <div>
-            <button className="text-white mx-5">
-          Login
-        </button>
-        <button className="px-3 py-2 border border-white text-white">
-          Get Started
-        </button>
+      <nav className="border-b border-gray-200 bg-white">
+
+        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+
+          <div>
+            <h1 className="text-sm font-semibold tracking-tight">
+              HabitFlow
+            </h1>
+
+            <p className="text-[11px] text-gray-500 mt-0.5">
+              Smart habit tracking
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3">
+
+            <button
+              onClick={handleLogin}
+              className="text-xs text-gray-600 hover:text-black transition-colors"
+            >
+              Login
+            </button>
+
+            <button
+              onClick={handleSignUp}
+              className="bg-black text-white text-xs font-medium px-4 py-2 rounded-md hover:opacity-90 transition-all"
+            >
+              Get Started
+            </button>
+
+          </div>
+
         </div>
       </nav>
 
-     
-      <section className=" py-24 px-6 flex justify-around">
-        <div>
-            <h2 className="text-5xl font-bold leading-tight tracking-tight mb-6">
-          Track Your Hobbies <br /> with AI
-           </h2>
+      
+      <main className="max-w-6xl mx-auto px-6 py-20">
 
-            <p className="text-gray-600 text-lg max-w-2xl  mb-10">
-          A simple way to stay consistent, track progress, and build better habits using AI-driven insights.
+        <div className="grid lg:grid-cols-2 gap-14 items-center">
+
+          
+          <div>
+
+            <p className="text-[11px] uppercase tracking-[0.2em] text-gray-400 mb-5">
+              Build better routines
             </p>
-            <button className="px-6 py-3 border border-white rounded-md text-white">
-          I have an account
-            </button>
+
+            <h1 className="text-5xl font-semibold tracking-tight leading-tight text-black">
+              Stay consistent
+              <br />
+              with your habits
+            </h1>
+
+            <p className="text-sm text-gray-500 leading-7 mt-6 max-w-lg">
+              Track your daily routines, monitor progress,
+              and improve consistency with a clean and
+              focused habit tracking experience.
+            </p>
+
+            <div className="flex items-center gap-3 mt-8">
+
+              <button
+                onClick={handleSignUp}
+                className="bg-black text-white text-xs font-medium px-5 py-3 rounded-lg hover:opacity-90 transition-all"
+              >
+                Start Tracking
+              </button>
+
+              <button
+                className="border border-gray-300 text-xs font-medium px-5 py-3 rounded-lg hover:bg-gray-100 transition-colors"
+              >
+                View Demo
+              </button>
+
+            </div>
+
+            <div className="flex items-center gap-8 mt-10">
+
+              <div>
+                <h3 className="text-xl font-semibold">
+                  12k+
+                </h3>
+
+                <p className="text-[11px] text-gray-500 mt-1">
+                  Active users
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-semibold">
+                  89%
+                </h3>
+
+                <p className="text-[11px] text-gray-500 mt-1">
+                  Weekly consistency
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-semibold">
+                  4.9
+                </h3>
+
+                <p className="text-[11px] text-gray-500 mt-1">
+                  User rating
+                </p>
+              </div>
+
+            </div>
+
+          </div>
+
+          
+          <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+
+            <div className="flex items-center justify-between mb-6">
+
+              <div>
+                <h2 className="text-sm font-semibold">
+                  Weekly Overview
+                </h2>
+
+                <p className="text-[11px] text-gray-500 mt-1">
+                  Your habit progress
+                </p>
+              </div>
+
+              <span className="text-[11px] text-gray-400">
+                This Week
+              </span>
+
+            </div>
+
             
+            <div className="space-y-5">
+
+              {[
+                {
+                  name: "Workout",
+                  progress: "80%",
+                  width: "80%",
+                },
+                {
+                  name: "Reading",
+                  progress: "60%",
+                  width: "60%",
+                },
+                {
+                  name: "Meditation",
+                  progress: "90%",
+                  width: "90%",
+                },
+              ].map((item, index) => (
+                <div key={index}>
+
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="text-xs text-black">
+                      {item.name}
+                    </p>
+
+                    <p className="text-[11px] text-gray-500">
+                      {item.progress}
+                    </p>
+                  </div>
+
+                  <div className="w-full h-2 rounded-full bg-gray-100 overflow-hidden">
+                    <div
+                      className="h-full bg-black rounded-full"
+                      style={{ width: item.width }}
+                    />
+                  </div>
+
+                </div>
+              ))}
+
+            </div>
+
+            
+            <div className="grid grid-cols-3 gap-4 mt-8 pt-6 border-t border-gray-100">
+
+              <div>
+                <p className="text-lg font-semibold">
+                  24
+                </p>
+
+                <p className="text-[11px] text-gray-500 mt-1">
+                  Habits completed
+                </p>
+              </div>
+
+              <div>
+                <p className="text-lg font-semibold">
+                  16
+                </p>
+
+                <p className="text-[11px] text-gray-500 mt-1">
+                  Day streak
+                </p>
+              </div>
+
+              <div>
+                <p className="text-lg font-semibold">
+                  92%
+                </p>
+
+                <p className="text-[11px] text-gray-500 mt-1">
+                  Success rate
+                </p>
+              </div>
+
+            </div>
+
+          </div>
+
         </div>
 
-    <div className="border border-white rounded-xl px-6 py-7">
-  <div className="border-b border-gray-200 pb-4 mb-4">
-    <h1 className="font-bold text-gray-200 mb-3">This week</h1>
-    
-    
-    <div className="mb-3">
-      <p className="mb-1">Play Guitar</p>
-      <div className="w-full bg-gray-500 rounded-full h-2">
-        <div className="bg-white h-2 rounded-full" style={{width: '60%'}}></div>
-      </div>
-    </div>
-     <div className="mb-3">
-      <p className="mb-1">Read Books</p>
-      <div className="w-full bg-gray-500 rounded-full h-2">
-        <div className="bg-white h-2 rounded-full" style={{width: '40%'}}></div>
-      </div>
-    </div>
-     <div className="mb-3">
-      <p className="mb-1">Morning Workouts</p>
-      <div className="w-full bg-gray-500 rounded-full h-2">
-        <div className="bg-white h-2 rounded-full" style={{width: '80%'}}></div>
-      </div>
-    </div>
-  </div>
+      </main>
 
- 
-  <div className="flex text-sm text-gray-400 space-x-6">
-  <div className="flex flex-col items-center">
-    <h5 className="font-bold">3</h5>
-    <p>Hobbies</p>
-  </div>
-  <div className="flex flex-col items-center">
-    <h5 className="font-bold">45</h5>
-    <p>sessions</p>
-  </div>
-  <div className="flex flex-col items-center">
-    <h5 className="font-bold">95%</h5>
-    <p>consistency</p>
-  </div>
-</div>
-</div>
+      
+      <section className="py-20 border-t border-gray-200 bg-white">
 
-        
+        <div className="max-w-6xl mx-auto px-6">
+
+          <div className="mb-12">
+
+            <p className="text-[11px] uppercase tracking-[0.2em] text-gray-400 mb-3">
+              Features
+            </p>
+
+            <h2 className="text-2xl font-semibold tracking-tight">
+              Designed for consistency
+            </h2>
+
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-5">
+
+            {[
+              {
+                title: "Simple Tracking",
+                description:
+                  "Track habits daily with a clean and distraction free interface.",
+              },
+              {
+                title: "Progress Analytics",
+                description:
+                  "Monitor streaks, completion rates, and weekly performance.",
+              },
+              {
+                title: "Smart Insights",
+                description:
+                  "Understand patterns and improve your routines over time.",
+              },
+            ].map((feature, index) => (
+              <div
+                key={index}
+                className="border border-gray-200 rounded-xl p-5"
+              >
+
+                <h3 className="text-sm font-semibold text-black">
+                  {feature.title}
+                </h3>
+
+                <p className="text-xs text-gray-500 leading-6 mt-3">
+                  {feature.description}
+                </p>
+
+              </div>
+            ))}
+
+          </div>
+
+        </div>
+
       </section>
 
-   
-      <section className="grid md:grid-cols-3 gap-8 px-8 py-16 max-w-6xl mx-auto">
+      
+      <section className="py-20">
 
-        <div className="p-6 border border-gray-200">
-          <h3 className="text-xl font-semibold mb-3">
-            AI Suggestions
-          </h3>
-          <p className="text-gray-600">
-            Get intelligent recommendations based on your activity patterns.
-          </p>
-        </div>
+        <div className="max-w-3xl mx-auto px-6 text-center">
 
-        <div className="p-6 border border-gray-200">
-          <h3 className="text-xl font-semibold mb-3">
-            Progress Tracking
-          </h3>
-          <p className="text-gray-600">
-            Visualize your consistency and improve over time.
+          <p className="text-[11px] uppercase tracking-[0.2em] text-gray-400 mb-4">
+            Start today
           </p>
-        </div>
 
-        <div className="p-6 border border-gray-200">
-          <h3 className="text-xl font-semibold mb-3">
-            Smart Reminders
-          </h3>
-          <p className="text-gray-600">
-            Minimal, non-intrusive reminders to keep you on track.
+          <h2 className="text-3xl font-semibold tracking-tight text-black">
+            Build habits that last
+          </h2>
+
+          <p className="text-sm text-gray-500 leading-7 mt-5">
+            Create routines, stay accountable, and improve
+            consistency with HabitFlow.
           </p>
+
+          <button
+            onClick={handleSignUp}
+            className="mt-8 bg-black text-white text-xs font-medium px-6 py-3 rounded-lg hover:opacity-90 transition-all"
+          >
+            Create Account
+          </button>
+
         </div>
 
       </section>
 
-    
-      <section className="text-center py-20 ">
+      
+      <footer className="border-t border-gray-200 bg-white">
 
-        <p className=" mb-4">
-          How It works
-        </p>
+        <div className="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between">
 
-        <h1 className="text-white mb-8 text-6xl font-mono">
-          Simple By Design
-        </h1>
-        <h2 className="text-3xl text-gray-500 font-serif">
-            01
-        </h2>
-        <h1 className="text-5xl text-white mb-2 ">
-            Add Hobbies
-        </h1>
-        <p className="mb-8 text-gray-600">
-            Choose create your own custom hobbies and goals alos take suggestion from AI your daily life routine.
-        </p>
-        <h2 className="text-3xl text-gray-500 font-serif">
-            02
-        </h2>
-        <h1 className="text-5xl text-white mb-2">
-            Track Progress
-        </h1>
-        <p className="mb-8 text-gray-600">
-            og sessions, notes, and milestones. Watch your skills compound over time.
-        </p>
-        <h2 className="text-3xl text-gray-500 font-serif">
-            03
-        </h2>
-        <h1 className="text-5xl text-white mb-2">
-            Get AI suggestions
-        </h1>
-        <p className="text-gray-600 mb-8">
-            Receive personalized tips and adaptive schedules based on your real data.
-        </p>
-        
-      </section>
+          <p className="text-[11px] text-gray-500">
+            © 2026 HabitFlow. All rights reserved.
+          </p>
 
-    
-      <footer className="text-center py-6 border-t border-gray-600 text-sm text-gray-500">
-        © {new Date().getFullYear()} HobbyAI. All rights reserved.
+          <div className="flex items-center gap-5">
+
+            <a
+              href="#"
+              className="text-[11px] text-gray-500 hover:text-black transition-colors"
+            >
+              Github
+            </a>
+
+            <a
+              href="#"
+              className="text-[11px] text-gray-500 hover:text-black transition-colors"
+            >
+              Privacy
+            </a>
+
+            <a
+              href="#"
+              className="text-[11px] text-gray-500 hover:text-black transition-colors"
+            >
+              Contact
+            </a>
+
+          </div>
+
+        </div>
+
       </footer>
 
     </div>

@@ -23,7 +23,7 @@ export const habitSchema = z.object({
 
   frequency: z.enum(["Daily", "Weekly"]),
 
-  targetDaysPerWeek: z
+  targetdaysperweek: z
     .number()
     .int()
     .min(1)

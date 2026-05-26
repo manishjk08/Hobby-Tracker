@@ -1,13 +1,56 @@
-import Landing from "./page/Landing"
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Navigate,
+} from "react-router-dom";
 
-function App() {
- 
+import Landing from "./page/Landing";
+import Register from "./page/Register";
+import Login from "./page/Login";
 
-  return (
-    <>
-      <Landing />
-    </>
-  )
-}
+import DashBoard from "./page/DashBoard";
+import Habits from "./page/Habits";
 
-export default App
+import DashboardLayout from "./layout/DashboardLayout";
+
+const router = createBrowserRouter([
+  {
+    path: "/landing",
+    element: <Landing />,
+  },
+  {
+    path: "/register",
+    element: <Register />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+
+  
+  {
+    path: "/",
+    element: <DashboardLayout />,
+    children: [
+      {
+        path: "dashboard",
+        element: <DashBoard />,
+      },
+      {
+        path: "habits",
+        element: <Habits />,
+      },
+    ],
+  },
+
+  {
+    path: "/",
+    element: <Navigate to="/landing" replace />,
+  },
+]);
+
+const App = () => {
+  return <RouterProvider router={router} />;
+};
+
+export default App;

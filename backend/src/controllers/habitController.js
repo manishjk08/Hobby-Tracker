@@ -7,10 +7,10 @@ import { habitModel } from "../model/habitModel.js";
 
 export const createHabit=async(req,res,next)=>{
     try {
-        const {title,description,category,icon,color,frequency,targetDaysPerWeek}=req.body
+        const {title,description,category,icon,color,frequency,targetdaysperweek}=req.body
         
         const habit=await habitModel.createHabit(req.user.id,title,description,category,icon,
-                    color,frequency,targetDaysPerWeek)
+                    color,frequency,targetdaysperweek)
 
                     res.status(201).json(
                         {
@@ -89,7 +89,7 @@ export const updateHabit=async(req,res,next)=>{
     
     try {
         const{ id }=req.params
-        const {title,description,category,icon,color,frequency,targetDaysPerWeek}=req.body
+        const {title,description,category,icon,color,frequency,targetdaysperweek}=req.body
 
         const existingHabit=await habitModel.findHabitById(id)
         if(!existingHabit){
@@ -103,7 +103,7 @@ export const updateHabit=async(req,res,next)=>{
             description,
             category,
             frequency,
-            targetDaysPerWeek,
+            targetdaysperweek,
             icon,
             color
     )
@@ -132,6 +132,7 @@ export const deleteHabit=async(req,res,next)=>{
             {
                 success:true,
                 message:'Habits deleted successfully'
+                
             }
         )
     } catch (error) {
