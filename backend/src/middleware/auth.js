@@ -1,11 +1,11 @@
 import jwt from 'jsonwebtoken'
 
- const authenticate=async(req,res,next)=>{
+ const authenticate=(req,res,next)=>{
   try{
 
     const authHeader=req.headers.authorization;
 
-    if(!authHeader || !authHeader.startsWith(`Bearer`)){
+    if(!authHeader || !authHeader.startsWith(`Bearer `)){
         return res.status(401).json(
           {error:`no token Provided`}
         )
@@ -24,7 +24,10 @@ import jwt from 'jsonwebtoken'
     next();
     
   } catch (err) {
-    return res.status(401).json({ error: 'Invalid or expired token.' });
+    if (err.name === 'TokenExpiredError') {
+        return res.status(401).json({ error: 'Token expired' })
+    }
+    return res.status(403).json({ error: 'Invalid token' })
   }
 
 } 

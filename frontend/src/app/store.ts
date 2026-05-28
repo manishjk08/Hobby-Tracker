@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from '../slices/AuthSlice'
 import habitReducer from '../slices/HabitSlice'
+import habitLogReducer from '../slices/HabitLogSlice'
 export const store = configureStore({
  reducer:{
     auth:authReducer,
-    habit:habitReducer
+    habit:habitReducer,
+    habitLog:habitLogReducer
 }
 
 });

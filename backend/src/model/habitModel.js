@@ -1,5 +1,5 @@
 import pool from "../config/db.js";
-import { updateHabit } from "../controllers/habitController.js";
+
 
 export const habitModel={
 
@@ -47,10 +47,10 @@ export const habitModel={
     );
     return result.rows[0];
 },
-findHabitById:async(id)=>{
+findHabitById:async(id,user_id)=>{
     const result= await pool.query(
-        `Select * from habits Where id=$1 `,
-        [id]
+        `Select * from habits Where id=$1 AND user_id=$2 `,
+        [id,user_id]
     );
     return result.rows[0]
 },

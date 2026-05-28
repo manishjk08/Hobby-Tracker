@@ -7,7 +7,19 @@ export const refreshTokenModel={
             Values($1,$2,$3)`,
             [user_id,token,expires_at]
         )
-
     },
+    deleteRefreshToken:async(token)=>{
+        const result=await pool.query(
+            `Delete  from refresh_tokens where token=$1`,
+            [token]
+        )
+    },
+    findByRefreshToken:async(token)=>{
+        const result=await pool.query(
+            `Select * from refresh_tokens where token=$1 AND expires_at > NOW()`,
+            [token]
+        )
+        return result.rows[0]
+    }
 
 }

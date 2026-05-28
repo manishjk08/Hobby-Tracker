@@ -35,6 +35,27 @@ export interface Habit {
   targetdaysperweek: Targetdaysperweek;
   isarchived: boolean;
 }
+export interface HabitLog{
+  id:number,
+  user_id:number,
+  habit_id:number,
+  streak:{
+    current:number,
+    longest:number,
+  }
+}
 
+
+
+export type HabitLogStateItem = {
+  habit_id: number;
+  streak: {
+    current: number;
+    longest: number;
+  };
+};
+
+export type HabitLogInput=Omit<HabitLog,'id'|'user_id'>
 export type HabitInput=Omit<Habit ,'id'|'isarchived'>
 export type HabitUpdateInput = Omit<Habit , 'isarchived'>
+

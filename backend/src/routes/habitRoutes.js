@@ -5,12 +5,14 @@ import validate from "../middleware/validate.js";
 import authenticate from '../middleware/auth.js'
 const router=express.Router()
 
-router.post('/create',validate(habitSchema),authenticate,createHabit)
-router.get('/get',authenticate,getHabit)
-router.put('/update/:id',authenticate,updateHabit)
-router.delete('/delete/:id',authenticate,deleteHabit)
+router.post('/',authenticate,validate(habitSchema),createHabit)
+router.get('/',authenticate,getHabit)
 router.get('/archive',authenticate,getArchivedHabit)
 router.get('/active',authenticate,getActiveHabit)
-router.post('/archive/:id',authenticate,archiveHabit)
-router.post('/restore/:id',authenticate,restoreHabit)
+
+router.put('/update/:id',authenticate,updateHabit)
+router.delete('/delete/:id',authenticate,deleteHabit)
+
+router.patch('/:id/archive', authenticate, archiveHabit)
+router.patch('/:id/restore', authenticate, restoreHabit)
 export default router

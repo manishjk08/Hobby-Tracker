@@ -1,4 +1,4 @@
-import { format,subDays,startOfWeek,endOfWeek,eachDayOfInterval,  } from "date-fns";
+import { format,subDays,startOfWeek,endOfWeek,eachDayOfInterval,differenceInCalendarDays,parseISO  } from "date-fns";
 
 export const toDateKey=(date)=>format(date, 'yyyy-MM-dd');
 export const todayKey=()=>toDateKey(new Date())
@@ -28,7 +28,7 @@ export const calculateStreak=(sortedDateKeys)=>{
     const yesterday=toDateKey(subDays(new Date(),1))
 
     let current=0;
-    let cursor=new Date();
+    let cursor = parseISO(todayKey())
     if(!set.has(today)&& !set.has(yesterday)){
         current=0;
         cursor=new Date()
@@ -48,9 +48,7 @@ let run=0;
 let prev=null;
 for(const key of sortedAsc){
     if(prev){
-        const d=new Date(key)
-        const p=new Date(prev);
-        const diff=Math.round((d-p)/(1000*60*60*24))
+        const diff = differenceInCalendarDays(parseISO(key), parseISO(prev))
         if(diff===1) run+=1;
         else run=1;
     }else{

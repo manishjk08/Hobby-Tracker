@@ -16,7 +16,7 @@ export const createHabit = createAsyncThunk(
     'habit/create',
     async (data: HabitInput, { rejectWithValue }) => {
         try {
-            const response = await api.post('/habit/create', data);
+            const response = await api.post('/habit/', data);
             return response.data.data;
         } catch (error: any) {
             return rejectWithValue(error.response?.data?.error || 'Habit Creation failed');
@@ -26,7 +26,7 @@ export const getHabit = createAsyncThunk(
     'habit/get',
     async (_, { rejectWithValue }) => {
         try {
-            const response = await api.get('/habit/get');
+            const response = await api.get('/habit/');
             return response.data.data;
         } catch (error: any) {
             return rejectWithValue(error.response?.data?.error || 'Fetching habit failed');
@@ -46,8 +46,8 @@ export const delHabit = createAsyncThunk(
     'habit/delete',
     async (data: { id: number }, { rejectWithValue }) => {
         try {
-            const response = await api.delete(`/habit/delete/${data.id}`);
-            return response.data.data;
+            await api.delete(`/habit/delete/${data.id}`);
+            return data.id;
         } catch (error: any) {
             return rejectWithValue(error.response?.data?.error || 'Delete habit failed');
         }
@@ -78,7 +78,7 @@ export const delHabit = createAsyncThunk(
     'habit/archive',
     async(data:{id:number},{rejectWithValue})=>{
         try {
-            const response=await api.post(`/habit/archive/${data.id}`)
+            const response=await api.patch(`/habit/${data.id}/archive`)
             return response.data.data
         } catch (error:any) {
             return rejectWithValue(error.response?.data?.error || 'archive habit failed')
@@ -89,7 +89,7 @@ export const delHabit = createAsyncThunk(
     'habit/restore',
     async(data:{id:number},{rejectWithValue})=>{
         try {
-            const response=await api.post(`/habit/restore/${data.id}`)
+            const response=await api.patch(`/habit/${data.id}/restore`)
             return response.data.data
         } catch (error:any) {
             return rejectWithValue(error.response?.data?.error || 'Resrore habit failed')
@@ -161,7 +161,7 @@ const habitSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload as string;
             })
-
+            
 
             //EDIT 
             .addCase(EditHabit.pending, (state) => {
@@ -170,10 +170,11 @@ const habitSlice = createSlice({
             })
             .addCase(EditHabit.fulfilled, (state, action) => {
                 state.loading = false;
-                const index = state.habits.findIndex(h => h.id === action.payload.id);
-                if (index !== -1) {
-                    state.habits[index] = action.payload;
-                }
+                const updatedHabit=action.payload
+                if(!updatedHabit?.id) return 
+                state.habits=state.habits.map(habit=>
+                    habit.id===updatedHabit.id?updatedHabit:habit
+                )
             })
             .addCase(EditHabit.rejected, (state, action) => {
                 state.loading = false;
@@ -187,7 +188,7 @@ const habitSlice = createSlice({
             })
             .addCase(delHabit.fulfilled, (state, action) => {
                 state.loading = false;
-                state.habits = state.habits.filter(h => h.id !== action.payload);
+                state.habits = state.habits.filter(habit => habit.id !== action.payload);
             })
             .addCase(delHabit.rejected, (state, action) => {
                 state.loading = false;

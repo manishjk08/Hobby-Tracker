@@ -1,7 +1,5 @@
-
+import { success } from "zod";
 import { habitModel } from "../model/habitModel.js";
-
-
 
 //create habit
 
@@ -30,8 +28,14 @@ export const createHabit=async(req,res,next)=>{
 export const getHabit=async(req,res,next)=>{
     try {
         const habits=await habitModel.getAllHabits(req.user.id)
-        if(!habits){
-            throw new Error('No habit to show')
+        if(habits.length==0){
+           res.status(200).json(
+            {
+                success:true,
+                message:"No habits to show",
+                data:[]
+            }
+           )
         }
         res.status(200).json(
             {
@@ -91,7 +95,7 @@ export const updateHabit=async(req,res,next)=>{
         const{ id }=req.params
         const {title,description,category,icon,color,frequency,targetdaysperweek}=req.body
 
-        const existingHabit=await habitModel.findHabitById(id)
+        const existingHabit=await habitModel.findHabitById(id,req.user.id)
         if(!existingHabit){
             res.status(404)
             throw new Error('No Habits to update')
@@ -107,7 +111,7 @@ export const updateHabit=async(req,res,next)=>{
             icon,
             color
     )
-    res.status(201).json({
+    res.status(200).json({
         success:true,
         message:"Habits updated",
         data:updatedHabits
@@ -122,7 +126,7 @@ export const updateHabit=async(req,res,next)=>{
 export const deleteHabit=async(req,res,next)=>{
     try {
         const{ id }=req.params
-        const existingHabit=await habitModel.findHabitById(id)
+        const existingHabit=await habitModel.findHabitById(id,req.user.id)
         if(!existingHabit){
             res.status(404)
             throw new Error('No habits to delete')
@@ -131,8 +135,8 @@ export const deleteHabit=async(req,res,next)=>{
         res.status(200).json(
             {
                 success:true,
-                message:'Habits deleted successfully'
-                
+                message:'Habits deleted successfully',
+                id
             }
         )
     } catch (error) {
@@ -144,20 +148,20 @@ export const deleteHabit=async(req,res,next)=>{
 export const archiveHabit=async(req,res,next)=>{
     try {
         const { id }=req.params
-        const habits=await habitModel.findHabitById(id)
+        const habits=await habitModel.findHabitById(id,req.user.id)
         if(!habits){
             res.status(404)
             throw new Error('Habits not found')
         }
         const archivedHabits=await habitModel.archiveHabit(id,req.user.id)
         if(!archivedHabits){
-            res.status(403)
-            throw new Error('Not Authorize to archive')
+            res.status(400)
+            throw new Error('Habit is already archived or not found')
         }
         res.status(200).json(
             {
                 success:true,
-                message:'Movied to archived',
+                message:'Moved to archived',
                 data:archivedHabits
             }
         )
@@ -171,15 +175,15 @@ export const archiveHabit=async(req,res,next)=>{
 export const restoreHabit=async(req,res,next)=>{
     try {
         const { id }=req.params
-        const habits=await habitModel.findHabitById(id)
+        const habits=await habitModel.findHabitById(id,req.user.id)
         if(!habits){
             res.status(404)
             throw new Error('Habits not found')
         }
         const restorehabit=await habitModel.restoreHabit(id,req.user.id)
         if(!restorehabit){
-            res.status(403)
-            throw new Error('Not Authorize to restore')
+            res.status(400)
+            throw new Error('Habit is already restore or not found')
         }
         res.status(200).json(
             {
