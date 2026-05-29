@@ -1,56 +1,73 @@
-
 import type { Habit } from "../types/type";
 
 type HabitCardProps = {
   habit: Habit;
+  streak:number,
   onMenuClick: () => void;
+  onMark:(id:number)=>void
+  onUnmark:(id:number)=>void;
 };
 
-const Card = ({ habit, onMenuClick }: HabitCardProps) => {
+const Card = ({ habit, onMenuClick,onMark,onUnmark,streak }: HabitCardProps) => {
+
+const completed=habit.completed
+
   return (
-    <div className="flex items-center justify-between bg-white rounded-2xl px-5 py-4 shadow-sm hover:shadow-md transition">
-      <div className="flex items-center gap-4">
+    <div className="flex items-center justify-between bg-white rounded-2xl px-4 py-3 border border-neutral-200 shadow-sm hover:shadow-md hover:border-neutral-300 transition">
+      
+      <div className="flex items-center gap-3 min-w-0">
+        
         <div
-          className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl"
-          style={{ backgroundColor: `${habit.color}20` }}
+          className="w-11 h-11 rounded-xl flex items-center justify-center text-lg border border-neutral-200"
+          style={{ backgroundColor: `${habit.color}10` }}
         >
           {habit.icon}
         </div>
 
-        <div className="flex flex-col">
-          <div className="flex items-center gap-2">
-            <h3 className="font-semibold text-gray-900 text-base">
+        <div className="flex flex-col min-w-0">
+          
+          <div className="flex items-center gap-2 flex-wrap">
+            <h3 className="text-sm font-medium text-black truncate">
               {habit.title}
             </h3>
 
-            <span className="text-xs bg-gray-100 text-gray-500 px-2 py-1 rounded-full">
+            <span className="text-[10px] text-neutral-500 bg-neutral-100 px-2 py-0.5 rounded-full uppercase tracking-wide">
               {habit.category}
             </span>
           </div>
 
-         
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-xs text-neutral-400 mt-1 truncate max-w-[220px]">
             {habit.description}
           </p>
+
         </div>
       </div>
 
-      <div className="flex items-center gap-4">
-        <div className="flex items-center gap-1 text-sm text-gray-400">
+      <div className="flex items-center gap-3">
+        
+        <div className="flex items-center gap-1 text-[11px] text-neutral-400">
           <span>🔥</span>
-          <span>0</span>
+          <span>{streak}</span>
         </div>
 
         <button
           onClick={onMenuClick}
-          className="text-xl text-gray-400 hover:text-gray-600 transition"
+          className="text-base text-neutral-500 hover:text-black transition"
         >
           ⋯
         </button>
 
-        <button className="w-10 h-10 rounded-full border-2 border-yellow-400 flex items-center justify-center text-yellow-500 hover:bg-yellow-50 transition">
-          ✓
+        <button
+            onClick={() => completed ? onUnmark(habit.id) : onMark(habit.id)}
+            className={`w-8 h-8 rounded-full border flex items-center justify-center text-xs transition
+                ${completed
+                    ? 'bg-black text-white border-black'  
+                    : 'border-neutral-300 text-black hover:bg-black hover:text-white hover:border-black'
+                }`}
+        >
+            ✓
         </button>
+
       </div>
     </div>
   );

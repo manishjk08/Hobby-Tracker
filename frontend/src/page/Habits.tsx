@@ -2,17 +2,21 @@ import { useEffect, useState } from "react";
 import Form from "../components/Form";
 import Card from "../components/Card";
 import { useAppDispatch, useAppSelector } from "../app/hook";
-import { delHabit, getActiveHabit, getArchiveHabit } from "../slices/HabitSlice";
+import { archiveHabit, delHabit, getActiveHabit, getArchiveHabit, restoreHabit } from "../slices/HabitSlice";
 import type { Habit } from "../types/type";
 import ActionMenu from "../components/ActionMenu";
+import { getStreak, markComplete, unMark } from "../slices/HabitLogSlice";
 
 const Habits = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isActive, setIsActive] = useState(true);
   const [menuHabit, setMenuHabit] = useState<Habit | null>(null);
   const [editingHabit, setEditingHabit] = useState<Habit | null>(null);
+
   const { habits } = useAppSelector((state) => state.habit);
+  const {habitLog}=useAppSelector((state)=>state.habitLog)
   const dispatch = useAppDispatch();
+
 
   useEffect(() => {
     if (isActive) {
@@ -32,6 +36,32 @@ const Habits = () => {
     setIsModalOpen(true);
     closeMenu();
   };
+  const handleArchive=(id:number)=>{
+    dispatch(archiveHabit({id}));
+    closeMenu();
+  }
+  const handleRestore=(id:number)=>{
+    dispatch(restoreHabit({id}))
+    closeMenu();
+  }
+  const handleMark=(id:number)=>{
+    dispatch(markComplete({id})).then(()=>{
+      dispatch(getStreak(id))
+      dispatch(getActiveHabit())
+    })
+  }
+  const handleUnMark=(id:number)=>{
+    dispatch(unMark({id})).then(()=>{
+      dispatch(getStreak(id))
+      dispatch(getActiveHabit())
+    })
+  }
+
+  useEffect(()=>{
+    habits.forEach(habit=>{
+      dispatch(getStreak(habit.id))
+    })
+  },[habits])
 
   const openMenu = (habit: Habit) => {
     setMenuHabit(habit);
@@ -51,24 +81,30 @@ const Habits = () => {
     setEditingHabit(null);
   };
 
+
+
   return (
-    <div className="w-full">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="font-bold">Habits</h1>
+    <div className="w-full text-black text-sm">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-sm font-medium tracking-wide uppercase">
+          Habits
+        </h1>
 
         <button
           onClick={openCreateModal}
-          className="px-3 py-2 bg-black text-white rounded"
+          className="px-3 py-1.5 border border-black rounded-md text-xs hover:bg-black hover:text-white transition"
         >
           + Add Habit
         </button>
       </div>
 
-      <div className="flex gap-2 mb-4">
+      <div className="flex gap-2 mb-6">
         <button
           onClick={() => setIsActive(true)}
-          className={`px-3 py-1 border rounded ${
-            isActive ? "bg-black text-white" : ""
+          className={`px-3 py-1 border rounded-md text-xs transition ${
+            isActive
+              ? "bg-black text-white border-black"
+              : "bg-white text-black border-black"
           }`}
         >
           Active
@@ -76,8 +112,10 @@ const Habits = () => {
 
         <button
           onClick={() => setIsActive(false)}
-          className={`px-3 py-1 border rounded ${
-            !isActive ? "bg-black text-white" : ""
+          className={`px-3 py-1 border rounded-md text-xs transition ${
+            !isActive
+              ? "bg-black text-white border-black"
+              : "bg-white text-black border-black"
           }`}
         >
           Archive
@@ -86,31 +124,43 @@ const Habits = () => {
 
       <div>
         {habits.length === 0 && (
-          <h1 className="text-2xl text-center m-4">
+          <h1 className="text-xs text-center text-neutral-500 my-10 tracking-wide">
             No habits
           </h1>
         )}
       </div>
 
-      <div className="space-y-4 p-4 relative">
-        {habits.map((habit) => (
+      <div className="space-y-3 p-1 relative">
+        {habits.map((habit) => {
+          const logEntry = habitLog.find(item => item.habit_id === habit.id)
+          const streak = logEntry?.streak.current ?? 0
+          return(
           <Card
             key={habit.id}
             habit={habit}
+            streak={streak}
             onMenuClick={() => openMenu(habit)}
+            onMark={handleMark}
+            onUnmark={handleUnMark}
           />
-        ))}
+          )
+         })}
+          
+          
+
         <ActionMenu
           habit={menuHabit}
           onClose={closeMenu}
           onDelete={handleDelete}
           onEdit={handleEdit}
+          onArchive={handleArchive}
+          onRestore={handleRestore}
         />
       </div>
 
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
-          <div className="bg-white rounded p-4 w-100">
+        <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center">
+          <div className="bg-white border border-black rounded-xl p-4 w-[400px] shadow-sm">
             <Form
               onClose={closeModal}
               editingHabit={editingHabit}

@@ -18,16 +18,16 @@ export const markComplete = createAsyncThunk(
     async (data: { id: number }, { rejectWithValue }) => {
         try {
             const response = await api.post('/log/', { habit_id: data.id });
-            return response.data;
+            return response.data.data;
         } catch (error: any) {
             return rejectWithValue(error.response?.data?.error || 'Habit Creation failed');
         }
     })
     export const getStreak = createAsyncThunk(
     'log/getStats',
-    async (data: { id: number }, { rejectWithValue }) => {
+    async ( habit_id: number , { rejectWithValue }) => {
         try {
-            const response = await api.get(`/log/streaks`, );
+            const response = await api.get(`/log/streaks/${habit_id}`, );
             return response.data;
         } catch (error: any) {
             return rejectWithValue(error.response?.data?.error || 'Habit Creation failed');
@@ -39,7 +39,7 @@ export const unMark = createAsyncThunk(
     async (data: { id: number }, { rejectWithValue }) => {
         try {
             const response = await api.delete('/log/', { data: { habit_id: data.id } });
-            return response.data;
+            return response.data.data;
         } catch (error: any) {
             return rejectWithValue(error.response?.data?.error || 'Habit Creation failed');
         }
@@ -61,50 +61,20 @@ const habitLogSlice = createSlice({
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(markComplete.fulfilled, (state, action) => {
+            .addCase(markComplete.fulfilled, (state) => {
                 state.loading = false;
-
-                const { habit_id, streak } = action.payload 
-
-                const existing = state.habitLog.find(
-                    log => log.habit_id === habit_id
-                );
-
-                if (existing) {
-                    existing.streak = streak;
-                } else {
-                    state.habitLog.push({
-                        habit_id,
-                        streak
-                    });
-                }
             })
             .addCase(markComplete.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload as string;
             })
-            //Unmark complete
+            // Unmark complete
             .addCase(unMark.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(unMark.fulfilled, (state, action) => {
+            .addCase(unMark.fulfilled, (state) => {
                 state.loading = false;
-
-                const { habit_id, streak } = action.payload 
-
-                const existing = state.habitLog.find(
-                    log => log.habit_id === habit_id
-                );
-
-                if (existing) {
-                    existing.streak = streak;
-                } else {
-                    state.habitLog.push({
-                        habit_id,
-                        streak
-                    });
-                }
             })
             .addCase(unMark.rejected, (state, action) => {
                 state.loading = false;
@@ -117,11 +87,17 @@ const habitLogSlice = createSlice({
             })
             .addCase(getStreak.fulfilled,(state,action)=>{
                 state.loading=false;
-                state.habitLog=action.payload;
+                const{habit_id,streak}=action.payload
+                const existing=state.habitLog.find(item=>item.habit_id===habit_id)
+                if(existing){
+                    existing.streak=streak
+                }else{
+                    state.habitLog.push({habit_id,streak})
+                }
                 state.error=null;
             })
             .addCase(getStreak.rejected,(state,action)=>{
-                state.loading=true;
+                state.loading=false;
                 state.error=action.payload as string
             })
             

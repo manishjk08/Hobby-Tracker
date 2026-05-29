@@ -43,9 +43,7 @@ const Form = ({ onClose, editingHabit }: FormProps) => {
         dispatch(getActiveHabit());
     };
 
-    useEffect(() => {
-        dispatch(getActiveHabit());
-    }, [dispatch]);
+    
 
     return (
         <div>

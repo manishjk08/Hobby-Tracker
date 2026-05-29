@@ -34,26 +34,29 @@ export interface Habit {
   frequency: Frequency;
   targetdaysperweek: Targetdaysperweek;
   isarchived: boolean;
+  completed:boolean;
 }
 export interface HabitLog{
   id:number,
   user_id:number,
   habit_id:number,
-  streak:{
-    current:number,
-    longest:number,
-  }
+  log_date:string,
+  completed:boolean,
+  note:string|null,
+  created_at:string,
 }
 
 
 
-export type HabitLogStateItem = {
-  habit_id: number;
-  streak: {
+export type HabitStreak = {
     current: number;
     longest: number;
-  };
 };
+
+export type HabitLogStateItem = {
+    habit_id: number
+    streak: HabitStreak
+}
 
 export type HabitLogInput=Omit<HabitLog,'id'|'user_id'>
 export type HabitInput=Omit<Habit ,'id'|'isarchived'>

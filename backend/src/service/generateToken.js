@@ -11,7 +11,7 @@ export const generateAccessToken=(user)=>{
         },
         process.env.ACCESS_TOKEN_SECRET,
         {
-            expiresIn:process.env.ACCESS_TOKEN_EXPIRES
+            expiresIn:parseInt(process.env.ACCESS_TOKEN_EXPIRES)
         }
     )
 }
@@ -23,7 +23,7 @@ export const generateRefreshToken=(user)=>{
         },
         process.env.REFRESH_TOKEN_SECRET,
         {
-            expiresIn:process.env.REFRESH_TOKEN_EXPIRES
+            expiresIn:parseInt(process.env.REFRESH_TOKEN_EXPIRES)
         }
     )
 }

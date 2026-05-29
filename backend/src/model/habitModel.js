@@ -1,5 +1,5 @@
 import pool from "../config/db.js";
-
+import { todayKey } from "../service/dateHelpers.js";
 
 export const habitModel={
 
@@ -85,10 +85,18 @@ getArchivedHabits:async(user_id)=>{
     return result.rows
 },
 
-getActivehabits:async(user_id)=>{
-    const result=await pool.query(
-        `Select * from habits where user_id=$1 AND isarchived=FALSE Order By createdat Desc`,
-        [user_id]
+getActivehabits: async (user_id) => {
+    const result = await pool.query(
+        `SELECT h.*,
+            CASE WHEN hl.id IS NOT NULL THEN TRUE ELSE FALSE END AS completed
+         FROM habits h
+         LEFT JOIN habit_logs hl
+            ON h.id = hl.habit_id
+            AND hl.log_date = $2
+            AND hl.user_id = $1
+         WHERE h.user_id = $1 AND h.isarchived = FALSE
+         ORDER BY h.createdat DESC`,
+        [user_id, todayKey()]
     )
     return result.rows
 }

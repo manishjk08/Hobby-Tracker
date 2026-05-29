@@ -53,7 +53,7 @@ export const delHabit = createAsyncThunk(
         }
     })
  export const getArchiveHabit=createAsyncThunk(
-    'habit/archive',
+    'habit/getArchive',
     async(_,{rejectWithValue})=>{
         try {
             const response=await api.get(`/habit/archive`)

@@ -9,7 +9,7 @@ export const markComplete=async(req,res,next)=>{
 
       const{habit_id,log_date,note}=req.body;
       const completedDate= log_date||todayKey() 
-      const habit=await habitModel.findHabitById(habit_id) 
+      const habit=await habitModel.findHabitById(habit_id,req.user.id) 
       if(!habit){
         res.status(404)
         throw new Error("Habit not found")
@@ -19,17 +19,13 @@ export const markComplete=async(req,res,next)=>{
         res.status(409)
             throw new Error('Habit already marked complete for this date')
       }
-      const rawDates=await habitLogModel.getHabitLogDates(habit_id)
-      const dates=rawDates.map(item=>
-        format(item.log_date,'yyyy-MM-dd')
-      )
-      const streak=calculateStreak(dates)
+    //   const rawDates=await habitLogModel.getHabitLogDates(habit_id,req.user.id)
+    //   const streak=calculateStreak(rawDates)
       res.status(201).json({
-        sucess:true,
+        success:true,
         message:"log Updated",
         data:{
             log,
-            streak,
         }
       })
     } catch (error) {
@@ -41,21 +37,18 @@ export const markComplete=async(req,res,next)=>{
 export const getStreak=async(req,res,next)=>{
     try {
 
-      const{habit_id}=req.params;
-     
-      const habit=await habitModel.findHabitById(habit_id) 
+      
+      const habit_id = parseInt(req.params.habit_id)
+      const habit=await habitModel.findHabitById(habit_id,req.user.id) 
       if(!habit){
         res.status(404)
         throw new Error("Habit not found")
       }
       
-      const rawDates=await habitLogModel.getHabitLogDates(habit_id)
-      const dates=rawDates.map(item=>
-        format(item.log_date,'yyyy-MM-dd')
-      )
-      const streak=calculateStreak(dates)
+      const rawDates=await habitLogModel.getHabitLogDates(habit_id,req.user.id)
+      const streak=calculateStreak(rawDates)
       res.status(200).json({
-        sucess:true,
+        success:true,
         message:" Your Streak ",
         habit_id:habit_id,
         streak:streak
@@ -70,7 +63,7 @@ export const unMark=async(req,res,next)=>{
     try {
         const{habit_id,log_date}=req.body
         const targetDate=log_date || todayKey()
-        const habit=await habitModel.findHabitById(habit_id)
+        const habit=await habitModel.findHabitById(habit_id,req.user.id)
         if(!habit){
             res.status(404)
             throw new Error('No habits found')
@@ -80,19 +73,15 @@ export const unMark=async(req,res,next)=>{
             res.status(404)
             throw new Error('No log found for this date')
         }
-        const rawDates=await habitLogModel.getHabitLogDates(habit_id)
-        const dates=rawDates.map(item=>
-        format(item.log_date,'yyyy-MM-dd')
-      )
-        const streak=calculateStreak(dates)
+        // const rawDates=await habitLogModel.getHabitLogDates(habit_id,req.user.id)
+        // const streak=calculateStreak(rawDates)
         res.status(200).json(
             {
-                sucess:true,
+                success:true,
                 message:'habits Unmarked',
                 data:{
                     habit_id,
                     date:targetDate,
-                    streak
                 }
             }
         )

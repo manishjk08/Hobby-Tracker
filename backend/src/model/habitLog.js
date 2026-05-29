@@ -13,7 +13,7 @@ export const habitLogModel={
 
     unMark:async(user_id,habit_id,log_date)=>{
         const result=await pool.query(
-            `Delete from habit_logs where habit_id=$1 And user_id=$2 And log_date=$3`,
+            `Delete from habit_logs where habit_id=$1 And user_id=$2 And log_date=$3 Returning *`,
             [habit_id,user_id,log_date]
         )
         return result.rows[0]
@@ -30,7 +30,7 @@ export const habitLogModel={
             `Select log_date from habit_logs where habit_id=$1 And user_id=$2 order by log_date ASC`,
             [habit_id,user_id]
         )
-        return result.rows
+        return result.rows.map(r=>r.log_date)
     },
      getToday: async (log_date, user_id) => {
         const result = await pool.query(
