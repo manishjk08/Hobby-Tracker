@@ -118,12 +118,12 @@ const Form = ({ onClose, editingHabit }: FormProps) => {
                             {...register("icon", { required: true })}
                         >
                             <option value="">Select</option>
-                            <option value="🏃">🏃 Running</option>
-                            <option value="📚">📚 Study</option>
-                            <option value="🧘">🧘 Meditation</option>
-                            <option value="💪">💪 Workout</option>
-                            <option value="💧">💧 Water</option>
-                            <option value="🧠">🧠 Focus</option>
+                            <option value="🏃">🏃 </option>
+                            <option value="📚">📚 </option>
+                            <option value="🧘">🧘 </option>
+                            <option value="💪">💪 </option>
+                            <option value="💧">💧 </option>
+                            <option value="🧠">🧠 </option>
                         </select>
                     </div>
 

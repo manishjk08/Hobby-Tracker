@@ -25,6 +25,13 @@ export const habitLogModel={
         )
         return result.rows
     },
+    getAllLogs:async(user_id)=>{
+        const result=await pool.query(
+            `Select * from habit_logs where user_id=$1 order by log_date desc`,
+            [user_id]
+        )
+        return result.rows
+    },
     getHabitLogDates:async(habit_id,user_id)=>{
         const result=await pool.query(
             `Select log_date from habit_logs where habit_id=$1 And user_id=$2 order by log_date ASC`,
@@ -63,7 +70,7 @@ export const habitLogModel={
     },
     getLogByDates:async(user_id,date_keys)=>{
         const result=await pool.query(
-            `SELECT log_date,habit_id from habit_logs where user_id=$1 log_date= ANY($2::date[])
+            `SELECT log_date,habit_id from habit_logs where user_id=$1 AND log_date= ANY($2::date[])
             Order by log_date ASC`,
             [user_id,date_keys]
         )

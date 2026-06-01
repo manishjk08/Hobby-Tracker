@@ -123,11 +123,26 @@ export const getRange=async(req,res,next)=>{
     }
 }
 
-export const getWeekly=async(req,res,next)=>{
+export const dashboard=async(req,res,next)=>{
     try {
-        const weekDays=currentWeekKeys()
-        const logs=await habitLogModel.getLogByDates(req.user.id,weekDays)
+        const habits=await habitModel.getAllHabits(req.user.id)
+        const logs=await habitLogModel.getAllLogs(req.user.id)
 
+        let bestStreak=0
+        let activeStreak=0
+
+        for(const habit of habits){
+            const rawDates= await habitLogModel.getHabitLogDates(
+                habit.id,req.user.id
+            )
+            const streak=  calculateStreak(rawDates)
+            bestStreak=Math.max(bestStreak,streak.longest||0)
+            activeStreak=Math.max(activeStreak,streak.current||0)
+        }
+        
+        
+        const expectedCompletionsPerWeek=habits.length * 7
+        const weekDays=currentWeekKeys()
         const countMap={};
         weekDays.forEach(d=>countMap[d]=0)
         logs.forEach(row=> {
@@ -135,19 +150,31 @@ export const getWeekly=async(req,res,next)=>{
             if(countMap[key]!==undefined) countMap[key]+=1
         })
            const weekly=weekDays.map(day=>({
+            completed:countMap[day]
+           })).reduce((acc,item)=> acc+item.completed,0)
+               
+           const weeklyData=weekDays.map(day=>({
             date:day,
             completed:countMap[day]
-           })) 
+           }))
+       
+        const weeklyCompletions=(weekly/expectedCompletionsPerWeek * 100).toFixed(2)
+    
         res.status(200).json(
             {
                 success:true,
-                message:"Weekly overview",
-                data:weekly
+                message:"Dashboard data",
+                data:{
+                    totalHabit:habits.length,
+                    bestStreak,
+                    activeStreak,
+                    weeklyData,
+                    weeklyCompletions
+                    
+                }
             }
         )
-
     } catch (error) {
         next(error)
     }
 }
-

@@ -45,6 +45,17 @@ export interface HabitLog{
   note:string|null,
   created_at:string,
 }
+type WeekData={
+date:string,
+completed:number,
+}
+export interface Dashboard{
+  totalHabit:number,
+  bestStreak:number,
+  activeStreak:number,
+  weeklyCompletions:number,
+  weeklyData:WeekData[]
+}
 
 
 

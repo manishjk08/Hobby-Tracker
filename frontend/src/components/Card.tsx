@@ -36,7 +36,7 @@ const completed=habit.completed
             </span>
           </div>
 
-          <p className="text-xs text-neutral-400 mt-1 truncate max-w-[220px]">
+          <p className="text-xs text-neutral-400 mt-1 truncate max-w-55">
             {habit.description}
           </p>
 

@@ -1,12 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../services/api";
-import type {  HabitLogStateItem } from "../types/type";
+import type {  Dashboard, HabitLogStateItem } from "../types/type";
 
 
 interface HabitLogState {
     habitLog: HabitLogStateItem[]
     loading: boolean
     error: string | null
+   
 }
 const initialState: HabitLogState = {
     habitLog: [],
@@ -45,6 +46,7 @@ export const unMark = createAsyncThunk(
         }
     })
     
+
 
 const habitLogSlice = createSlice({
     name: "habitLog",
