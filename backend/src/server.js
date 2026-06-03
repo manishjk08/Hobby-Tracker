@@ -8,6 +8,7 @@ import { errorHandler,notFound } from './middleware/errorHandler.js'
 import authRoutes from './routes/authRoutes.js'
 import habitRoutes from './routes/habitRoutes.js'
 import logRoutes from './routes/logRoutes.js'
+import aiRoutes from './routes/aiRoutes.js'
 
 const app=express()
 const PORT=process.env.PORT||5000
@@ -26,6 +27,7 @@ app.use(cookieParser());
 app.use('/api/auth',authRoutes)
 app.use('/api/habit',habitRoutes)
 app.use('/api/log',logRoutes)
+app.use("/api/ai", aiRoutes);
 
 
 
