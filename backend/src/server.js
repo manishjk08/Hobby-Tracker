@@ -9,6 +9,7 @@ import authRoutes from './routes/authRoutes.js'
 import habitRoutes from './routes/habitRoutes.js'
 import logRoutes from './routes/logRoutes.js'
 import aiRoutes from './routes/aiRoutes.js'
+import rateLimit from 'express-rate-limit';
 
 const app=express()
 const PORT=process.env.PORT||5000
@@ -23,17 +24,23 @@ app.use(helmet())
 app.use(morgan("dev"))
 app.use(cookieParser());
 
+const aiLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 5,              // 5 AI calls per minute per IP
+  message: { success: false, message: 'Too many requests' }
+});
+
 //routes
 app.use('/api/auth',authRoutes)
 app.use('/api/habit',habitRoutes)
 app.use('/api/log',logRoutes)
-app.use("/api/ai", aiRoutes);
+app.use("/api/ai", aiLimiter, aiRoutes);
 
 
 
 //mock
 app.get('/', (req, res) => {
-  res.json({ message: 'Hobby tracker API is running.' });
+  res.json({ message: 'habit tracker API is running.' });
 });
 
 //error handler

@@ -1,5 +1,4 @@
 import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
-import { useAppSelector } from "../app/hook";
 
 const DashboardLayout = () => {
   const location = useLocation();
@@ -16,6 +15,11 @@ const DashboardLayout = () => {
       name: "Habits",
       path: "/habits",
     },
+    {
+      id:"insights",
+      name:"Insights",
+      path:"/insights"
+    }
   ];
   const handleLogout=()=>{
     navigate('/landing')

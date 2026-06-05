@@ -10,7 +10,7 @@ import BarChart from "../components/BarChart";
 const DashBoard = () => {
   
   const dispatch=useAppDispatch()
-  const {dashboard}=useAppSelector(state=>state.DashBoard)
+  const {dashboard}=useAppSelector(state=>state.dashboard)
   const {user}=useAppSelector(state=>state.auth)
 
 useEffect(()=>{

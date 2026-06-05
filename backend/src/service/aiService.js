@@ -24,9 +24,25 @@ export const parseHabits= async(text)=>{
 //AI insights
 
 export const generateInsights=async(stats)=>{
-    const prompt = `User stats: ${JSON.stringify(stats)}
-    Act as a habit coach and provide insights based on the user's habit tracking data. 
-    Keep the response concise and focused on actionable advice.`
+    const prompt = `
+You are a habit coach. Analyze this user's habit data and return ONLY a JSON object.
+
+User data:
+- Total habits tracked: ${stats.totalHabits}
+- Overall completion rate: ${stats.completionRate}%
+- Current streak: ${stats.currentStreak} days
+- Most completed habit: ${stats.bestHabit}
+- Most skipped habit: ${stats.worstHabit}
+
+Return this exact shape:
+{
+  "summary": "1 sentence overview",
+  "win": "their biggest win this week",
+  "warning": "one habit at risk",
+  "tip": "one specific actionable advice"
+}
+Return ONLY the JSON. No markdown, no explanation.
+`;
     const result=await model.generateContent(prompt);
     const response=await result.response
     return response.text()

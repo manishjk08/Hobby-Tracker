@@ -19,8 +19,6 @@ export const markComplete=async(req,res,next)=>{
         res.status(409)
             throw new Error('Habit already marked complete for this date')
       }
-    //   const rawDates=await habitLogModel.getHabitLogDates(habit_id,req.user.id)
-    //   const streak=calculateStreak(rawDates)
       res.status(201).json({
         success:true,
         message:"log Updated",
@@ -73,8 +71,6 @@ export const unMark=async(req,res,next)=>{
             res.status(404)
             throw new Error('No log found for this date')
         }
-        // const rawDates=await habitLogModel.getHabitLogDates(habit_id,req.user.id)
-        // const streak=calculateStreak(rawDates)
         res.status(200).json(
             {
                 success:true,
@@ -139,7 +135,6 @@ export const dashboard=async(req,res,next)=>{
             bestStreak=Math.max(bestStreak,streak.longest||0)
             activeStreak=Math.max(activeStreak,streak.current||0)
         }
-        
         
         const expectedCompletionsPerWeek=habits.length * 7
         const weekDays=currentWeekKeys()

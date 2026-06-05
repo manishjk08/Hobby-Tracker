@@ -12,6 +12,7 @@ import DashBoard from "./page/DashBoard";
 import Habits from "./page/Habits";
 
 import DashboardLayout from "./layout/DashboardLayout";
+import Insights from "./page/Insights";
 
 const router = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
         path: "habits",
         element: <Habits />,
       },
+      {
+        path:"insights",
+        element:<Insights/>
+      }
     ],
   },
 

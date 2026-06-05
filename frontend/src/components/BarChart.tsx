@@ -21,7 +21,7 @@ ChartJS.register(
 );
 
 const BarChart = () => {
-    const {dashboard}=useAppSelector(state=>state.DashBoard)
+    const {dashboard}=useAppSelector(state=>state.dashboard)
     const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
      const weeklyCompleted = days.map((day) => {
     const match = dashboard?.weeklyData?.find((item) => {

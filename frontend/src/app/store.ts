@@ -3,12 +3,14 @@ import authReducer from '../slices/AuthSlice'
 import habitReducer from '../slices/HabitSlice'
 import habitLogReducer from '../slices/HabitLogSlice'
 import dashboardReducer from '../slices/DashboardSlice'
+import aiReducer from '../slices/AiSlice'
 export const store = configureStore({
  reducer:{
     auth:authReducer,
     habit:habitReducer,
     habitLog:habitLogReducer,
-    DashBoard:dashboardReducer,
+    dashboard:dashboardReducer,
+    ai:aiReducer,
 }
 
 });
