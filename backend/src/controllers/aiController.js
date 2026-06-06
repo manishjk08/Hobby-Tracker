@@ -11,13 +11,13 @@ export const getSuggestions =async(req,res,next)=>{
 }
 export const getInsights = async (req, res) => {
   try {
-    const { totalHabits, completionRate, currentStreak, bestHabit, worstHabit } = req.body;
+    const { totalHabits, completionRate, currentStreak,longestStreak, bestHabit, worstHabit,weeklyCompletions } = req.body;
 
-    if (!completionRate || !currentStreak) {
+    if (completionRate===undefined || currentStreak===undefined) {
       return res.status(400).json({ success: false, message: 'Missing required stats' });
     }
 
-    const stats = { totalHabits, completionRate, currentStreak, bestHabit, worstHabit };
+    const stats = { totalHabits, completionRate, currentStreak, longestStreak, bestHabit, worstHabit, weeklyCompletions };
     const result = await aiService.generateInsights(stats);
 
     res.json({ success: true, data: result });

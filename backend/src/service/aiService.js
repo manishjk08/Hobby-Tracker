@@ -23,14 +23,16 @@ export const parseHabits= async(text)=>{
 
 //AI insights
 
-export const generateInsights=async(stats)=>{
-    const prompt = `
+export const generateInsights = async (stats) => {
+  const prompt = `
 You are a habit coach. Analyze this user's habit data and return ONLY a JSON object.
 
 User data:
 - Total habits tracked: ${stats.totalHabits}
 - Overall completion rate: ${stats.completionRate}%
 - Current streak: ${stats.currentStreak} days
+- Longest streak ever: ${stats.longestStreak} days
+- Weekly completions (Mon-Sun): ${stats.weeklyCompletions?.join(', ')}
 - Most completed habit: ${stats.bestHabit}
 - Most skipped habit: ${stats.worstHabit}
 
@@ -43,7 +45,22 @@ Return this exact shape:
 }
 Return ONLY the JSON. No markdown, no explanation.
 `;
-    const result=await model.generateContent(prompt);
-    const response=await result.response
-    return response.text()
-}
+
+  try {
+    const result = await model.generateContent(prompt);
+    const text = result.response.text();
+
+    const match = text.match(/\{[\s\S]*\}/);
+    if (!match) throw new Error('No JSON in AI response');
+
+    return JSON.parse(match[0]);
+  } catch (error) {
+    console.error('AI insights failed:', error);
+    return {
+      summary: "Keep going — consistency builds momentum.",
+      win: null,
+      warning: null,
+      tip: "Try completing your easiest habit first each day."
+    };
+  }
+};
